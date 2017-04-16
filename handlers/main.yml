@@ -1,0 +1,9 @@
+---
+- name: restart dnsmasq
+  become: yes
+  service:
+    name: dnsmasq
+    state: restarted
+  when:
+    - "{{ not dnsmasq_started }}"
+    - "{{ dnsmasq_manage_service }}"

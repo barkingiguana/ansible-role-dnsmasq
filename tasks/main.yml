@@ -1,0 +1,28 @@
+---
+- name: Install dnsmasq
+  become: yes
+  package:
+    name: dnsmasq
+
+- name: Configure dnsmasq
+  become: yes
+  template:
+    dest: /etc/dnsmasq.conf
+    src: templates/dnsmasq.conf.j2
+  notify:
+    - restart dnsmasq
+
+- name: Enable service
+  become: yes
+  service:
+    name: dnsmasq
+    enabled: yes
+
+- name: Start service
+  become: yes
+  service:
+    name: dnsmasq
+    state: started
+  register: dnsmasq_started
+  when:
+    - "{{ dnsmasq_manage_service }}"
